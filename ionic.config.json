@@ -1,0 +1,7 @@
+{
+  "name": "cleme-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
