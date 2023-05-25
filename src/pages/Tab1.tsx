@@ -39,46 +39,7 @@ const Tab1: React.FC = () => {
       setSelectedSegment('segment');
     } catch (error: any) { console.log(error) }
   }
-  const saveImageToDevice = async (url: string, fileName: string): Promise<void> => {
-    try {
-      let base64Data: string;
-      if (isPlatform('hybrid')) {
-        const file = await Filesystem.readFile({
-          path: url!,
-        });
-        base64Data = file.data;
-      } else {
-        base64Data = await base64FromPath(url!);
-      }
-      const savedFile = await Filesystem.writeFile({
-        path: fileName,
-        data: base64Data,
-        directory: Directory.Data,
-      });
 
-      setIsOpen(true);
-
-    } catch (error) {
-      console.error('Error al guardar la imagen:', error);
-    }
-  }
-  async function base64FromPath(path: string): Promise<string> {
-    const response = await fetch(path);
-    const blob = await response.blob();
-
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onerror = reject;
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          resolve(reader.result);
-        } else {
-          reject('method did not return a string');
-        }
-      };
-      reader.readAsDataURL(blob);
-    });
-  }
   function handleRefresh(event: CustomEvent<RefresherEventDetail>) {
     setTimeout(() => {
       // Any calls to load data go here
@@ -131,7 +92,7 @@ const Tab1: React.FC = () => {
                             <img alt="Silhouette of mountains" src={cat.url} style={{ width: '100%', height: '250px', objectFit: 'contain' }} />
                           </div>
                           <IonCardContent >
-                            <IonButton style={{ margin: 'auto', display: 'block' }} onClick={() => { saveImageToDevice(cat.url, cat.id) }}>Guardar</IonButton>
+                            <IonButton style={{ margin: 'auto', display: 'block' }} onClick={() => { setIsOpen(true)}}>Guardar</IonButton>
                             <IonToast
                               isOpen={isOpen}
                               message="Ya se guardó, bato"
